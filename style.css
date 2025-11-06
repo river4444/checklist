@@ -2,21 +2,20 @@
 :root {
     --bg-color: #121212;
     --primary-text: #e0e0e0;
-    --secondary-text: #a0a0a0;
+    --secondary-text: #b0b0b0;
     --card-bg: #1e1e1e;
-    --border-color: #333;
-    --accent-color: #007bff;
-    --accent-hover: #0056b3;
-    --prob-high: #28a745;
+    --input-bg: #2a2a2a;
+    --border-color: #383838;
+    --accent-color: #0d6efd;
+    --accent-hover: #0a58ca;
+    --prob-high: #198754;
     --prob-medium: #ffc107;
     --prob-low: #dc3545;
+    --rr-good: #198754;
+    --rr-bad: #dc3545;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -27,16 +26,15 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 30px;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Header */
 header {
     text-align: center;
     margin-bottom: 30px;
@@ -44,77 +42,91 @@ header {
     padding-bottom: 20px;
 }
 
-header h1 {
-    margin-bottom: 10px;
-    color: #fff;
+header h1 { margin-bottom: 10px; color: #fff; }
+header p { color: var(--secondary-text); font-size: 1em; }
+
+/* Main Layout */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
 }
 
-header p {
-    color: var(--secondary-text);
-    font-size: 0.9em;
+.left-column, .right-column { display: flex; flex-direction: column; gap: 20px; }
+
+.section, .tier {
+    background-color: #242424;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
-/* Tiers and Checklist Items */
-.tier {
-    margin-bottom: 30px;
-}
-
-.tier h2 {
+h2, h3 {
     font-size: 1.2em;
     color: var(--accent-color);
     margin-bottom: 15px;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--border-color);
 }
 
+.right-column h2 { text-align: center; }
+
+/* Input Fields */
+.input-group { margin-bottom: 15px; }
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: var(--secondary-text);
+}
+
+input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--primary-text);
+    font-size: 1em;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+textarea { resize: vertical; min-height: 80px; }
+
+/* R:R Display */
+.rr-display {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--input-bg);
+    border-radius: 4px;
+}
+
+#rr-value { font-size: 1.1em; }
+
+/* Checklist */
 .checklist-item {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
-    font-size: 1em;
 }
 
-.checklist-item label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    width: 100%;
-}
+.checklist-item label { display: flex; align-items: center; cursor: pointer; width: 100%; }
 
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
     margin-right: 15px;
     cursor: pointer;
-    accent-color: var(--accent-color); /* Modern way to style checkboxes */
-}
-
-/* Narrative Section */
-.narrative-section {
-    margin-top: 30px;
-}
-
-.narrative-section h3 {
-    margin-bottom: 5px;
-}
-
-.narrative-section p {
-    color: var(--secondary-text);
-    font-size: 0.85em;
-    margin-bottom: 10px;
-}
-
-textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 10px;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--primary-text);
-    font-family: inherit;
-    font-size: 0.95em;
-    resize: vertical;
+    accent-color: var(--accent-color);
 }
 
 /* Results Section */
@@ -127,23 +139,9 @@ textarea {
     border-top: 1px solid var(--border-color);
 }
 
-#score-display {
-    font-size: 1.4em;
-    font-weight: bold;
-}
-
-#score-value {
-    color: var(--accent-color);
-}
-
-#score-feedback {
-    font-size: 1.1em;
-    font-weight: bold;
-    padding: 8px 12px;
-    border-radius: 4px;
-}
-
-/* Feedback Colors */
+#score-display { font-size: 1.4em; font-weight: bold; }
+#score-value { color: var(--accent-color); }
+#score-feedback { font-size: 1.1em; font-weight: bold; padding: 8px 12px; border-radius: 4px; }
 .prob-high { color: var(--prob-high); }
 .prob-medium { color: var(--prob-medium); }
 .prob-low { color: var(--prob-low); }
@@ -160,6 +158,11 @@ textarea {
     transition: background-color 0.2s ease;
 }
 
-#reset-btn:hover {
-    background-color: var(--accent-hover);
+#reset-btn:hover { background-color: var(--accent-hover); }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
 }
