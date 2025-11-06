@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A+ Trade Confluence Checklist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>A+ Trade Confluence Checklist</h1>
+            <p>Build your case. Only risk capital on high-probability setups. (Aim for 7/12 or higher)</p>
+        </header>
+
+        <form id="checklist-form">
+            <!-- Tier 1: Strategic Foundation -->
+            <div class="tier">
+                <h2>Tier 1: Strategic Foundation (HTF - H4/Daily)</h2>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">1. HTF Market Structure aligned with trade direction.</label>
+                </div>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">2. Clear HTF Liquidity Target identified.</label>
+                </div>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">3. Weekly/Daily Context supports the trade idea.</label>
+                </div>
+            </div>
+
+            <!-- Tier 2: Tactical Zone of Interest -->
+            <div class="tier">
+                <h2>Tier 2: Tactical Zone of Interest (MTF - H1/M15)</h2>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">4. Entry zone at a key Price Level (S/R Flip, Order Block, or Breaker Block).</label>
+                </div>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">5. Zone has strong Fibonacci Confluence (e.g., Golden Pocket).</label>
+                </div>
+                 <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">6. Zone is mitigating a significant Imbalance / FVG.</label>
+                </div>
+                 <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">7. Zone aligns with a high-volume area (e.g., POC, HVN).</label>
+                </div>
+                 <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">8. Zone has Moving Average Confluence (e.g., 21/50 EMA).</label>
+                </div>
+            </div>
+
+            <!-- Tier 3: Execution Trigger -->
+            <div class="tier">
+                <h2>Tier 3: Execution Trigger (LTF - M15/M5)</h2>
+                 <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">9. Clear pre-entry Liquidity Sweep occurred (e.g., Three-Drive Pattern).</label>
+                </div>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">10. <strong>(Mandatory)</strong> LTF Market Structure Shift (CHoCH) has confirmed entry.</label>
+                </div>
+            </div>
+
+            <!-- Tier 4: Risk Management -->
+            <div class="tier">
+                <h2>Tier 4: Risk Management & Viability</h2>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">11. The trade offers a clear Risk/Reward Ratio of at least 2.5R to TP1.</label>
+                </div>
+                <div class="checklist-item">
+                    <label><input type="checkbox" class="confluence-checkbox">12. There is a clear, structurally protected level for the Stop-Loss.</label>
+                </div>
+            </div>
+        </form>
+
+        <div class="narrative-section">
+            <h3>Trade Narrative</h3>
+            <p>Summarize the story of your trade in one clear sentence.</p>
+            <textarea id="trade-narrative" placeholder="e.g., Shorting a weak pullback to an H4 S/R flip zone during London session after an M5 CHoCH, targeting the major sell-side liquidity at..."></textarea>
+        </div>
+
+        <div class="results-section">
+            <div id="score-display">
+                Confluence Score: 
+                <span id="score-value">0</span> / 12
+            </div>
+            <div id="score-feedback">
+                Awaiting Analysis...
+            </div>
+            <button id="reset-btn">Reset Checklist</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
