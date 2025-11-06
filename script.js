@@ -1,33 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Select all the necessary elements from the DOM
+    // --- ELEMENT SELECTORS ---
+    const form = document.getElementById('checklist-form');
+    const allInputs = document.querySelectorAll('input, select, textarea');
     const checkboxes = document.querySelectorAll('.confluence-checkbox');
     const scoreValueEl = document.getElementById('score-value');
     const scoreFeedbackEl = document.getElementById('score-feedback');
     const resetButton = document.getElementById('reset-btn');
-    const narrativeTextarea = document.getElementById('trade-narrative');
+    
+    // R:R Calculator Elements
+    const entryPriceEl = document.getElementById('entry-price');
+    const stopLossEl = document.getElementById('stop-loss');
+    const takeProfit1El = document.getElementById('take-profit-1');
+    const rrValueEl = document.getElementById('rr-value');
+    const htfBiasEl = document.getElementById('htf-bias');
 
     const TOTAL_POINTS = 12;
 
+    // --- FUNCTIONS ---
+
     function updateScore() {
         let currentScore = 0;
-        
-        // Loop through each checkbox to see if it's checked
         checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                currentScore++;
-            }
+            if (checkbox.checked) currentScore++;
         });
 
-        // Update the score display
         scoreValueEl.textContent = currentScore;
 
-        // Update the feedback message and color based on the score
-        scoreFeedbackEl.className = ''; // Reset classes
+        scoreFeedbackEl.className = ''; 
         if (currentScore >= 9) {
             scoreFeedbackEl.textContent = 'A+ Setup. High Probability.';
             scoreFeedbackEl.classList.add('prob-high');
-        } else if (currentScore >= 6) {
+        } else if (currentScore >= 7) {
             scoreFeedbackEl.textContent = 'Viable Setup. Medium Probability.';
             scoreFeedbackEl.classList.add('prob-medium');
         } else {
@@ -35,28 +39,96 @@ document.addEventListener('DOMContentLoaded', () => {
             scoreFeedbackEl.classList.add('prob-low');
         }
     }
+    
+    function calculateRR() {
+        const entry = parseFloat(entryPriceEl.value);
+        const stop = parseFloat(stopLossEl.value);
+        const tp1 = parseFloat(takeProfit1El.value);
+        const bias = htfBiasEl.value;
 
-    function resetChecklist() {
-        // Uncheck all checkboxes
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
+        if (!entry || !stop || !tp1 || bias === 'neutral') {
+            rrValueEl.textContent = 'N/A';
+            rrValueEl.style.color = 'var(--secondary-text)';
+            return;
+        }
 
-        // Clear the narrative textarea
-        narrativeTextarea.value = '';
+        let risk, reward;
 
-        // Update the score display to reset it to 0
-        updateScore();
+        if (bias === 'bullish') { // For a long trade
+            risk = entry - stop;
+            reward = tp1 - entry;
+        } else { // For a bearish trade
+            risk = stop - entry;
+            reward = entry - tp1;
+        }
+
+        if (risk <= 0) {
+            rrValueEl.textContent = 'Invalid SL';
+            rrValueEl.style.color = 'var(--rr-bad)';
+            return;
+        }
+        
+        const rrRatio = (reward / risk).toFixed(2);
+
+        if (rrRatio > 0) {
+            rrValueEl.textContent = `${rrRatio} R`;
+            rrValueEl.style.color = rrRatio >= 2.5 ? 'var(--rr-good)' : 'var(--rr-bad)';
+        } else {
+            rrValueEl.textContent = 'Invalid TP';
+            rrValueEl.style.color = 'var(--rr-bad)';
+        }
     }
 
-    // Add an event listener to each checkbox that calls updateScore on change
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateScore);
+    function resetPlan() {
+        form.reset();
+        document.querySelectorAll('.left-column input, .left-column select, .left-column textarea').forEach(el => {
+            if(el.tagName === 'SELECT') el.value = 'neutral';
+            else el.value = '';
+        });
+        localStorage.removeItem('tradePlanData');
+        updateAll();
+    }
+    
+    function saveState() {
+        const data = {};
+        allInputs.forEach(input => {
+            data[input.id] = input.type === 'checkbox' ? input.checked : input.value;
+        });
+        localStorage.setItem('tradePlanData', JSON.stringify(data));
+    }
+
+    function loadState() {
+        const data = JSON.parse(localStorage.getItem('tradePlanData'));
+        if (data) {
+            allInputs.forEach(input => {
+                if (data[input.id] !== undefined) {
+                    if (input.type === 'checkbox') {
+                        input.checked = data[input.id];
+                    } else {
+                        input.value = data[input.id];
+                    }
+                }
+            });
+        }
+    }
+    
+    function updateAll() {
+        updateScore();
+        calculateRR();
+    }
+
+    // --- EVENT LISTENERS ---
+    
+    allInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            updateAll();
+            saveState();
+        });
     });
 
-    // Add an event listener to the reset button
-    resetButton.addEventListener('click', resetChecklist);
+    resetButton.addEventListener('click', resetPlan);
 
-    // Initial call to set the score to 0 on page load
-    updateScore();
+    // --- INITIALIZATION ---
+    loadState();
+    updateAll();
 });
