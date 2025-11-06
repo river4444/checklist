@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Planning Dashboard</title>
+    <title>A+ Trade Planning Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>Trade Planning Dashboard</h1>
-            <p>Systematically build your case before risking capital.</p>
+            <h1>A+ Trade Planning Dashboard</h1>
+            <p>A systematic process for identifying and executing high-probability trade setups. Complete this before every trade.</p>
         </header>
 
         <div class="main-grid">
@@ -19,39 +19,41 @@
             <div class="left-column">
                 <!-- Key Levels Section -->
                 <div class="section">
-                    <h2>Key Levels & Bias</h2>
+                    <h2>Key Levels & Strategic Bias</h2>
+                    <p class="section-description">First, define the battlefield. What is the overall story the market is telling?</p>
                     <div class="input-group">
-                        <label for="htf-bias">HTF Directional Bias:</label>
+                        <label for="htf-bias">1. HTF Directional Bias (H4/Daily):</label>
                         <select id="htf-bias">
-                            <option value="neutral">Neutral</option>
-                            <option value="bullish">Bullish</option>
-                            <option value="bearish">Bearish</option>
+                            <option value="neutral">--- Select Bias ---</option>
+                            <option value="bullish">Bullish (Seeking Longs)</option>
+                            <option value="bearish">Bearish (Seeking Shorts)</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="liquidity-target">Major Liquidity Target:</label>
-                        <input type="text" id="liquidity-target" placeholder="e.g., Sell-Side below 98,944">
+                        <label for="liquidity-target">2. Major Liquidity Target:</label>
+                        <input type="text" id="liquidity-target" placeholder="e.g., Sell-Side Liquidity below the clean low at 98,944">
                     </div>
                     <div class="input-group">
-                        <label for="entry-zone">A+ Entry Zone (Kill Zone):</label>
-                        <input type="text" id="entry-zone" placeholder="e.g., 102,000 - 103,650">
+                        <label for="entry-zone">3. A+ Entry Zone (Your "Kill Zone"):</label>
+                        <input type="text" id="entry-zone" placeholder="e.g., 102,000 - 103,650 (S/R Flip + 0.382 Fib)">
                     </div>
                 </div>
 
                 <!-- Trade Parameters Section -->
                 <div class="section">
-                    <h2>Trade Parameters & R:R</h2>
+                    <h2>Trade Parameters & Risk-to-Reward</h2>
+                    <p class="section-description">Define your exact trade plan. The numbers must make sense before you enter.</p>
                     <div class="input-group">
-                        <label for="entry-price">Entry Price:</label>
+                        <label for="entry-price">4. Planned Entry Price:</label>
                         <input type="number" id="entry-price" placeholder="e.g., 103100">
                     </div>
                     <div class="input-group">
-                        <label for="stop-loss">Stop-Loss:</label>
-                        <input type="number" id="stop-loss" placeholder="e.g., 104950">
+                        <label for="stop-loss">5. Invalidation / Stop-Loss:</label>
+                        <input type="number" id="stop-loss" placeholder="e.g., 104950 (Above structural high)">
                     </div>
                     <div class="input-group">
-                        <label for="take-profit-1">Take Profit 1 (TP1):</label>
-                        <input type="number" id="take-profit-1" placeholder="e.g., 98944">
+                        <label for="take-profit-1">6. Take Profit 1 (De-Risk Level):</label>
+                        <input type="number" id="take-profit-1" placeholder="e.g., 98944 (Previous swing low)">
                     </div>
                     <div class="rr-display">
                         Risk/Reward to TP1: <span id="rr-value">N/A</span>
@@ -61,17 +63,18 @@
                  <!-- Narrative Section -->
                 <div class="section">
                     <h2>Trade Plan Narrative</h2>
+                    <p class="section-description">If you can't explain the trade simply, you don't understand it well enough to take it.</p>
                     <div class="input-group">
                         <label for="narrative-thesis">Thesis (The "Why"):</label>
-                        <textarea id="narrative-thesis" placeholder="Why this trade? e.g., HTF is bearish after major CHoCH. Price is now pulling back into a key HTF resistance zone."></textarea>
+                        <textarea id="narrative-thesis" placeholder="Why this trade? e.g., HTF is bearish after a major CHoCH. Price is now pulling back into a key HTF resistance zone where sellers previously showed strength."></textarea>
                     </div>
                     <div class="input-group">
                         <label for="narrative-entry">Entry Plan (The "How"):</label>
-                        <textarea id="narrative-entry" placeholder="How will I enter? e.g., Wait for M15 CHoCH within the 102k-103.6k zone, then enter on the retest."></textarea>
+                        <textarea id="narrative-entry" placeholder="How will I enter? e.g., Wait for price to test the 103k level, then look for an M5 CHoCH as confirmation. Enter on the first pullback after the LTF structure breaks."></textarea>
                     </div>
                     <div class="input-group">
-                        <label for="narrative-invalidation">Invalidation (When am I wrong?):</label>
-                        <textarea id="narrative-invalidation" placeholder="When is the idea void? e.g., A strong close above the 0.5 Fib and the last swing high would invalidate the bearish pullback thesis."></textarea>
+                        <label for="narrative-invalidation">Invalidation (When is my thesis wrong?):</label>
+                        <textarea id="narrative-invalidation" placeholder="When is the idea void? e.g., A strong 4H close above the 0.5 Fib and the last swing high (~105k) would invalidate the bearish pullback thesis, suggesting a more complex correction is underway."></textarea>
                     </div>
                 </div>
             </div>
@@ -79,30 +82,32 @@
             <!-- Right Column: Checklist -->
             <div class="right-column">
                 <form id="checklist-form">
-                    <h2>Confluence Checklist</h2>
-                    <!-- Tier 1 -->
-                    <h3>Tier 1: Strategic Foundation</h3>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">1. HTF Market Structure aligned.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">2. Clear HTF Liquidity Target.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">3. Weekly/Daily Context supports.</label></div>
+                    <div class="section">
+                        <h2>Confluence Checklist</h2>
+                        <!-- Tier 1 -->
+                        <h3>Tier 1: Strategic Foundation (HTF)</h3>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>1. HTF Market Structure:</span> Does my trade direction align with the H4/Daily trend (BOS) or a confirmed shift (CHoCH)?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>2. HTF Liquidity Target:</span> Is there an obvious pool of liquidity (clean highs/lows) that the market is targeting, making my TP logical?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>3. Weekly/Daily Context:</span> Does the timing of this setup align with typical weekly patterns (e.g., mid-week trend continuation)?</label></div>
 
-                    <!-- Tier 2 -->
-                    <h3>Tier 2: Tactical Zone</h3>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">4. Key Price Level (S/R, OB, Breaker).</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">5. Fibonacci Confluence.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">6. Imbalance / FVG Fill.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">7. Volume Profile Confluence.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">8. Moving Average Confluence.</label></div>
+                        <!-- Tier 2 -->
+                        <h3>Tier 2: Tactical Zone (MTF)</h3>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>4. Key Price Level:</span> Is my zone anchored to a strong structural level like an S/R Flip, Order Block, or Breaker Block?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>5. Fibonacci Confluence:</span> Does the zone overlap with a key Fib level (0.5 - 0.786) of the preceding impulse leg?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>6. Imbalance / FVG Fill:</span> Is my entry mitigating a significant price inefficiency (FVG), ideally at its 50% level?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>7. Volume Profile:</span> Does the zone align with a High Volume Node (HVN) or Point of Control (POC), indicating a historical area of agreement/resistance?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>8. Moving Average Confluence:</span> Is a key MA (e.g., 21/50 EMA on H1/H4) providing dynamic resistance/support in this zone?</label></div>
 
-                    <!-- Tier 3 -->
-                    <h3>Tier 3: Execution Trigger</h3>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">9. Pre-entry Liquidity Sweep.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">10. <strong>(Mandatory)</strong> LTF CHoCH confirmed.</label></div>
+                        <!-- Tier 3 -->
+                        <h3>Tier 3: Execution Trigger (LTF)</h3>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>9. Pre-entry Liquidity Sweep:</span> Has the price engineered a liquidity grab just before my entry (e.g., Three-Drive Pattern, sweep of session high)?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>10. <strong>LTF CHoCH Confirmation:</strong></span> Has the LTF (M5/M15) structure shifted in my favor *within my zone*, confirming order flow has flipped?</label></div>
 
-                    <!-- Tier 4 -->
-                    <h3>Tier 4: Risk Management</h3>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">11. R:R to TP1 is > 2.5R.</label></div>
-                    <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox">12. Clear Invalidation Level for Stop.</label></div>
+                        <!-- Tier 4 -->
+                        <h3>Tier 4: Risk Management</h3>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>11. R:R to TP1:</span> Is the calculated Risk:Reward to my first target at least 2.5:1 or higher?</label></div>
+                        <div class="checklist-item"><label><input type="checkbox" class="confluence-checkbox"><span>12. Clear Invalidation:</span> Is my Stop-Loss placed at a logical structural level that definitively proves my thesis wrong if hit?</label></div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -115,7 +120,7 @@
             <div id="score-feedback">
                 Awaiting Analysis...
             </div>
-            <button id="reset-btn">Reset Plan</button>
+            <button id="reset-btn">Reset Full Plan</button>
         </div>
     </div>
 
