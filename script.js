@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- ELEMENT SELECTORS ---
     const form = document.getElementById('checklist-form');
     const allInputs = document.querySelectorAll('input, select, textarea');
     const checkboxes = document.querySelectorAll('.confluence-checkbox');
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreFeedbackEl = document.getElementById('score-feedback');
     const resetButton = document.getElementById('reset-btn');
     
-    // R:R Calculator Elements
     const entryPriceEl = document.getElementById('entry-price');
     const stopLossEl = document.getElementById('stop-loss');
     const takeProfit1El = document.getElementById('take-profit-1');
@@ -16,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const htfBiasEl = document.getElementById('htf-bias');
 
     const TOTAL_POINTS = 12;
-
-    // --- FUNCTIONS ---
 
     function updateScore() {
         let currentScore = 0;
@@ -46,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const tp1 = parseFloat(takeProfit1El.value);
         const bias = htfBiasEl.value;
 
-        if (!entry || !stop || !tp1 || bias === 'neutral') {
+        // Reset if inputs are not valid numbers or bias is not set
+        if (isNaN(entry) || isNaN(stop) || isNaN(tp1) || bias === 'neutral') {
             rrValueEl.textContent = 'N/A';
             rrValueEl.style.color = 'var(--secondary-text)';
             return;
@@ -54,39 +51,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let risk, reward;
 
-        if (bias === 'bullish') { // For a long trade
+        if (bias === 'bullish') {
             risk = entry - stop;
             reward = tp1 - entry;
-        } else { // For a bearish trade
+        } else if (bias === 'bearish') {
             risk = stop - entry;
             reward = entry - tp1;
+        } else {
+            // Should not happen, but as a fallback
+            rrValueEl.textContent = 'Set Bias';
+            rrValueEl.style.color = 'var(--secondary-text)';
+            return;
         }
-
+        
+        // Check for invalid risk or reward values
         if (risk <= 0) {
             rrValueEl.textContent = 'Invalid SL';
             rrValueEl.style.color = 'var(--rr-bad)';
             return;
         }
+        if (reward <= 0) {
+             rrValueEl.textContent = 'Invalid TP';
+             rrValueEl.style.color = 'var(--rr-bad)';
+             return;
+        }
         
         const rrRatio = (reward / risk).toFixed(2);
 
-        if (rrRatio > 0) {
-            rrValueEl.textContent = `${rrRatio} R`;
-            rrValueEl.style.color = rrRatio >= 2.5 ? 'var(--rr-good)' : 'var(--rr-bad)';
-        } else {
-            rrValueEl.textContent = 'Invalid TP';
-            rrValueEl.style.color = 'var(--rr-bad)';
-        }
+        rrValueEl.textContent = `${rrRatio} R`;
+        rrValueEl.style.color = rrRatio >= 2.5 ? 'var(--rr-good)' : 'var(--rr-bad)';
     }
 
     function resetPlan() {
-        form.reset();
-        document.querySelectorAll('.left-column input, .left-column select, .left-column textarea').forEach(el => {
-            if(el.tagName === 'SELECT') el.value = 'neutral';
-            else el.value = '';
-        });
-        localStorage.removeItem('tradePlanData');
-        updateAll();
+        if (confirm("Are you sure you want to reset the entire plan?")) {
+            form.reset();
+            document.querySelectorAll('.left-column input, .left-column select, .left-column textarea').forEach(el => {
+                if(el.tagName === 'SELECT') el.value = 'neutral';
+                else el.value = '';
+            });
+            localStorage.removeItem('tradePlanData');
+            updateAll();
+        }
     }
     
     function saveState() {
@@ -118,14 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- EVENT LISTENERS ---
-    
     allInputs.forEach(input => {
         input.addEventListener('input', () => {
             updateAll();
             saveState();
         });
     });
-
     resetButton.addEventListener('click', resetPlan);
 
     // --- INITIALIZATION ---
