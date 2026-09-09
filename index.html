@@ -16,8 +16,7 @@
             --color-yoga: #a370f7;
             --color-workout: #f1c40f;
             --color-walk: #2ecc71;
-            --color-nw: #555555;
-            --color-w: #ff4b2b;
+            --color-ride: #ff7675;
         }
 
         /* Password Lock Styles */
@@ -94,6 +93,7 @@
         .habit-item input[data-habit="1"]:checked + .custom-checkbox { background: var(--color-yoga); border-color: var(--color-yoga); }
         .habit-item input[data-habit="2"]:checked + .custom-checkbox { background: var(--color-workout); border-color: var(--color-workout); }
         .habit-item input[data-habit="3"]:checked + .custom-checkbox { background: var(--color-walk); border-color: var(--color-walk); }
+        .habit-item input[data-habit="4"]:checked + .custom-checkbox { background: var(--color-ride); border-color: var(--color-ride); }
 
         textarea { 
             width: 100%; height: 200px; background: rgba(255, 255, 255, 0.03); 
@@ -104,15 +104,6 @@
         }
         textarea:focus { border-color: rgba(255,255,255,0.3); }
 
-        /* NW / W Sub-habits */
-        .w-choice-container { display: flex; gap: 20px; margin-top: 15px; opacity: 0.3; transition: 0.3s; justify-content: flex-end; }
-        .w-choice-container:hover { opacity: 1; }
-        .w-choice-container .habit-item { font-size: 0.8rem; }
-        .w-choice-container .custom-checkbox { width: 20px; height: 20px; border-radius: 4px; }
-        .w-choice-container .habit-item input[data-habit="4"]:checked + .custom-checkbox { background: var(--color-nw); border-color: var(--color-nw); }
-        .w-choice-container .habit-item input[data-habit="5"]:checked + .custom-checkbox { background: var(--color-w); border-color: var(--color-w); }
-        .w-choice-container .habit-item input:checked + .custom-checkbox::after { left: 6px; top: 2px; }
-
         /* Footer / Actions */
         .actions-row { display: flex; gap: 10px; margin-top: 40px; }
         .action-btn { 
@@ -122,12 +113,6 @@
             transition: 0.2s;
         }
         .action-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
-
-        .agreements {
-            display: flex; flex-direction: column; gap: 6px; margin-top: 40px;
-            text-align: center; border-top: 1px solid #1a1a1a; padding-top: 30px;
-        }
-        .agreement-item { font-size: 0.55rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -160,26 +145,15 @@
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="1"><span class="custom-checkbox"></span>Yoga</label>
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="2"><span class="custom-checkbox"></span>Workout</label>
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="3"><span class="custom-checkbox"></span>Walk</label>
+        <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="4"><span class="custom-checkbox"></span>Ride</label>
     </div>
 
-    <textarea id="journal-text" placeholder="Journal your day here..."></textarea>
-    
-    <div class="w-choice-container">
-        <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="4" id="cb-nw"><span class="custom-checkbox"></span>NW</label>
-        <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="5" id="cb-w"><span class="custom-checkbox"></span>W</label>
-    </div>
+    <textarea id="journal-text" placeholder=""></textarea>
 
     <div class="actions-row">
         <button class="action-btn" onclick="saveDataFile()">Export Data</button>
         <button class="action-btn" onclick="document.getElementById('load-input').click()">Import Data</button>
         <input type="file" id="load-input" style="display:none" onchange="loadDataFile(event)">
-    </div>
-
-    <div class="agreements">
-        <div class="agreement-item">I. Be impeccable with your word</div>
-        <div class="agreement-item">II. Do not take anything personally</div>
-        <div class="agreement-item">III. Do not make assumptions</div>
-        <div class="agreement-item">IV. Always do your best</div>
     </div>
 
 </div>
@@ -234,7 +208,7 @@
 
         // Fetch Data from LocalStorage
         const key = getDateKey(viewedDate);
-        const data = JSON.parse(localStorage.getItem(key)) || { text: "", habits: [false,false,false,false,false,false], wake: "" };
+        const data = JSON.parse(localStorage.getItem(key)) || { text: "", habits: [false,false,false,false,false], wake: "" };
         
         // Populate Inputs
         document.getElementById('wake-time').value = data.wake || "";
@@ -297,20 +271,12 @@
         const wake = document.getElementById('wake-time');
         const text = document.getElementById('journal-text');
         const habits = document.querySelectorAll('.habit-cb');
-        const nw = document.getElementById('cb-nw');
-        const w = document.getElementById('cb-w');
-
-        // Mutually exclusive toggle for NW and W
-        nw.onchange = () => { if (nw.checked) w.checked = false; saveDayData(); };
-        w.onchange = () => { if (w.checked) nw.checked = false; saveDayData(); };
 
         // Save on changes
         wake.onblur = () => { wake.value = formatWakeTime(wake.value); saveDayData(); };
         text.oninput = saveDayData;
         habits.forEach(h => { 
-            if (h.id !== 'cb-nw' && h.id !== 'cb-w') {
-                h.onchange = saveDayData; 
-            }
+            h.onchange = saveDayData; 
         });
     }
 
