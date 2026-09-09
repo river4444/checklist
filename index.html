@@ -17,6 +17,7 @@
             --color-workout: #f1c40f;
             --color-walk: #2ecc71;
             --color-ride: #ff7675;
+            --color-stretch: #00cec9;
         }
 
         /* Password Lock Styles */
@@ -43,7 +44,7 @@
         }
 
         .main-content {
-            width: 100%; max-width: 480px; padding: 60px 24px;
+            width: 100%; max-width: 480px; padding: 60px 24px 100px 24px;
             display: flex; flex-direction: column; gap: 30px;
         }
 
@@ -94,6 +95,7 @@
         .habit-item input[data-habit="2"]:checked + .custom-checkbox { background: var(--color-workout); border-color: var(--color-workout); }
         .habit-item input[data-habit="3"]:checked + .custom-checkbox { background: var(--color-walk); border-color: var(--color-walk); }
         .habit-item input[data-habit="4"]:checked + .custom-checkbox { background: var(--color-ride); border-color: var(--color-ride); }
+        .habit-item input[data-habit="5"]:checked + .custom-checkbox { background: var(--color-stretch); border-color: var(--color-stretch); }
 
         textarea { 
             width: 100%; height: 200px; background: rgba(255, 255, 255, 0.03); 
@@ -104,15 +106,30 @@
         }
         textarea:focus { border-color: rgba(255,255,255,0.3); }
 
-        /* Footer / Actions */
-        .actions-row { display: flex; gap: 10px; margin-top: 40px; }
+        /* Footer / Actions - Moved to Bottom Right */
+        .actions-row { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            display: flex; 
+            gap: 8px; 
+            z-index: 100;
+        }
         .action-btn { 
-            flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.1); 
-            color: var(--text-secondary); padding: 12px; font-size: 0.7rem; 
-            border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1); 
+            color: var(--text-secondary); 
+            padding: 6px 10px; 
+            font-size: 0.55rem; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em;
             transition: 0.2s;
         }
-        .action-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .action-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
     </style>
 </head>
 <body>
@@ -146,16 +163,17 @@
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="2"><span class="custom-checkbox"></span>Workout</label>
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="3"><span class="custom-checkbox"></span>Walk</label>
         <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="4"><span class="custom-checkbox"></span>Ride</label>
+        <label class="habit-item"><input type="checkbox" class="habit-cb" data-habit="5"><span class="custom-checkbox"></span>Stretch</label>
     </div>
 
     <textarea id="journal-text" placeholder=""></textarea>
+</div>
 
-    <div class="actions-row">
-        <button class="action-btn" onclick="saveDataFile()">Export Data</button>
-        <button class="action-btn" onclick="document.getElementById('load-input').click()">Import Data</button>
-        <input type="file" id="load-input" style="display:none" onchange="loadDataFile(event)">
-    </div>
-
+<!-- Floating Action Buttons -->
+<div class="actions-row">
+    <button class="action-btn" onclick="saveDataFile()">Export Data</button>
+    <button class="action-btn" onclick="document.getElementById('load-input').click()">Import Data</button>
+    <input type="file" id="load-input" style="display:none" onchange="loadDataFile(event)">
 </div>
 
 <script>
@@ -208,7 +226,7 @@
 
         // Fetch Data from LocalStorage
         const key = getDateKey(viewedDate);
-        const data = JSON.parse(localStorage.getItem(key)) || { text: "", habits: [false,false,false,false,false], wake: "" };
+        const data = JSON.parse(localStorage.getItem(key)) || { text: "", habits: [false,false,false,false,false,false], wake: "" };
         
         // Populate Inputs
         document.getElementById('wake-time').value = data.wake || "";
